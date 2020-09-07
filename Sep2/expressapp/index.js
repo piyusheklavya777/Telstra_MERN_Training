@@ -3,11 +3,13 @@ const express = require('express');
 const app = express();
 const indexRouter = require('./routes')
 
-app.use('/', (req,res) => {
+app.use('/', (req,res, next) => {
     console.log('main:index.js app.use(/) ')
-  // res.write('main:index.js app.use(/) ')
-  //  res.end('\n\nEOF res.end()')
+    //res.send('Dodo')
+    //next()
 })
+
+
 app.use( express.static( path.join( __dirname, 'public' ) ) );
 
 //the below code is a part of initializing localhost
