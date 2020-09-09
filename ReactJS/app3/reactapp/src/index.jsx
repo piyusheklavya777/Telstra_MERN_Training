@@ -1,7 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import App from './components/App'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
-    <App/>, document.getElementById('root')
+   <BrowserRouter>
+        <App/>
+   </BrowserRouter>
+   ,
+   
+   document.getElementById('root')
 )
