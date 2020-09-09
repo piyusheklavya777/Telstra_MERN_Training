@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+        <script type="text/babel">
+            function TodoInput( { addTodo } ) {
+                const inputRef = React.createRef();
+             //   console.log(inputRef);
+                const addTodoHelper = () => addTodo({
+                    name: inputRef.current.value,
+                    completed: false
+                });            
+
+                return (
+                    <div className="my-3">
+                        <input type="text" placeholder="What to do?" className="form-control" ref={inputRef} />
+                        <button className="btn btn-primary btn-block my-1" onClick={addTodoHelper}>Add todo</button>
+                    </div>
+                );
+            }
+
+            function TodoList( { todos } ) {
+
+                const inputRef = React.createRef();
+
+                const delTodoHelper = () => delTodo({ idx: inputRef.current.value  });
+
+                return (
+                    <ul className="list-group">
+                    {
+                        todos.map( todo => (
+                            <li key={todo.name} className="list-group-item">
+                                <input type="checkbox" checked={todo.completed} />
+                                Name: {todo.name}
+                                <button className="btn btn-danger btn-sm float-right" onClick={delTodoHelper}>Delete</button>
+                            </li>
+                        ))
+                    }
+                    </ul>
+                );
+            }
+
+            class TodoListApp extends React.Component {
+                state = {
+                    todos: this.props.todos
+                }
+
+                addTodo = ( newTodo ) => {
+                    this.setState({
+                        todos: [
+                            ...this.state.todos,
+                            newTodo
+                        ]
+                    });
+                }
+
+                delTodo = ( {idx} ) => {
+                   // console.log(idx)
+                    this.setState({
+                        todos: this.todos.splice(idx,1)
+                    });
+                }
+
+                render() {
+                    const { todos } = this.state;
+                    
+                    return (
+                        <div className="container my-5">
+                            <h1>Todo List Application</h1>
+                            <hr />
+                            <TodoInput context={this} addTodo={this.addTodo} />
+                            <TodoList todos={todos} />
+                        </div>
+                    );
+                }
+            }
+
+            const todos = [
+                { name: 'Go on vacation', completed: false },
+                { name: 'Practice React', completed: false },
+                { name: 'Practice MongoDB', completed: true }
+            ];
+
+            ReactDOM.render( <TodoListApp todos={todos} />, document.getElementById( 'root' ) );
+        </script>
+    </body>
+</html>

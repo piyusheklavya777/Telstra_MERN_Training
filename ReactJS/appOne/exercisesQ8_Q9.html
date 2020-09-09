@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+        <script type="text/babel">
+            // Q 8 was updated for a solution to Q9
+
+            function BusinessCard ({name, designation, company, imageUrl, contactDetails}) {
+
+                return (
+                    <React.Fragment>
+                        <div class="alert alert-primary">
+                            <h1>{name} </h1>
+                            <h2>{designation} </h2>
+                            <h3> {company} </h3>
+                            {<Contact c={contactDetails}/>}
+                            <img src={imageUrl} alt="Image not available"/>
+                            </div>
+                    </React.Fragment>
+                )
+            }
+
+            function Contact(props) {
+                console.log('mobile: ')
+                //console.log(mo)
+                return (
+                    <React.Fragment>
+                        <div class="alert alert-secondary">
+                            <h3>Contact Details</h3>
+                            <h5>Mobile: {props.c.mo} </h5>
+                            <h5>mail: {props.c.email} </h5>
+                            <h5>Based in: {props.c.city} </h5>
+                            </div>
+                    </React.Fragment>
+                )
+            }
+
+            const contactDetails = {
+                mo : "+91-9741926963" , email: "piyusheklavya7@gmail.com",
+                city: "Bangalore"
+            }
+
+            const props = {
+                name: "Piyush",          designation: "ASE",
+                company: "Telstra",     //contactDetails: "+91-9741926963",
+                imageUrl: "./user.jpeg",  contactDetails: contactDetails
+            };
+           
+
+            ReactDOM.render( <BusinessCard {...props} x={100} />, document.getElementById( 'root' ) );
+        </script>
+    </body>
+</html>

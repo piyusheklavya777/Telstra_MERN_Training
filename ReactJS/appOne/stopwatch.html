@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+        <script type="text/babel">
+            class Counter extends React.Component {
+                state = {  num : 0  }
+
+                constructor(props) {
+                    super(props)
+                    this.increment = this.increment.bind(this);
+                }
+
+                increment=()=> {
+                    alert('+ was clicked')
+                    // this.setState({
+                    //     num: this.state.num +1
+                    // })
+                    console.log('in render this = ', this)
+                }
+                decrement=()=> {
+                    alert('- was clicked')
+                    // this.setState({
+                    //     num: this.state.num -1
+                    // })
+                    console.log('in render this = ', this)
+                }
+
+                render() {
+                    console.log('in render this = ', this);
+                    return (
+                        <div>
+                            <span>{this.state.num}</span> 
+                            <button onClick={this.increment}>Start</button> 
+                            <button onClick={this.decrement}>Pause</button>   
+                        </div>
+                    )
+                }
+            }
+            ReactDOM.render( <Counter/>, document.getElementById( 'root' ) );
+        </script>
+    </body>
+</html>
+
+<!-- 12-jsx-syntax-invoice.html -->

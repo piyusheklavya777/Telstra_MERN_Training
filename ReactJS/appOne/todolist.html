@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <!-- TodoApp -->
+        <div id="root">
+            <!-- TaskInput -->
+            <form>
+                <input type="text" placeholder="What do you want to do?" />
+                <button>Add todo</button>
+            </form>
+            <!-- TaskList -->
+            <ol id="list-display">
+                <li>Go on a vacation</li>
+                <li>Watch movie on the weekend</li>
+                <li>Grocery shopping</li>
+            </ol>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.13.1/umd/react.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.13.1/umd/react-dom.development.min.js"></script>
+
+        <script type="text/babel">
+
+       
+
+        class Task extends React.Component {
+            constructor(props) {
+                super(props);
+
+                this.state = {
+                    tasks : ['Set a task']
+                }
+            }
+
+            newtask(task) {
+            this.setState({
+                tasks: [...this.state.tasks, task]
+            })
+        }
+
+            render() {
+                
+                return (
+                    <div>
+                        <input type="text" placeholder="New task here">
+                        <button onSubmit={this.newtask()}>
+
+                        {this.state.tasks.map(  (task)=> { return <li>{task}</li> }  )}
+                    </div>
+                )
+            }
+
+            // componentDidMount() {
+            //     setInterval(() => { // has to be an arrow function. Context of function() { } syntax is window and not the clock.
+            //        this.setState({
+            //            time: (new Date()).toTimeString()
+            //        })
+            //     }, 1000);
+            // }
+        }
+
+        ReactDOM.render( <Task/>,
+            document.getElementById('root')
+        )
+
+        </script>
+    </body>
+</html>
