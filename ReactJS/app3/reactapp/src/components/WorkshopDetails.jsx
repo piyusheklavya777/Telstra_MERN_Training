@@ -2,6 +2,10 @@
 import React, { Component } from 'react';
 import { getWorkshopById } from '../services/workshops';
 import Moment from 'react-moment'
+import {Route, Switch, Link} from 'react-router-dom'
+import SessionsList from './SessionsList' 
+import AddSession from './AddSession';
+//import Route from 'react-router-dom'
 
 export default class WorkshopDetails extends Component {
     state = {
@@ -17,6 +21,9 @@ export default class WorkshopDetails extends Component {
         switch( status ) {
             case WorkshopDetails.Status.LOADING_WORKSHOP_DETAILS:
                 /* b4-alert-dismissible */
+                // <Alert theme="primary">
+                        
+                // </Alert>
                 el = (
                     <div className="alert alert-primary alert-dismissible fade show" role="alert">
                         <button type="button" className="close" data-dismiss="alert" aria-label="Close">
@@ -29,7 +36,8 @@ export default class WorkshopDetails extends Component {
                 break;
             case WorkshopDetails.Status.LOADED_WORKSHOP_DETAILS:
                 el = (
-                 <div>
+                <>    
+                    <div>
                         <h2>
                             {workshop.name}
                         </h2>
@@ -73,6 +81,20 @@ export default class WorkshopDetails extends Component {
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <div>
+                            <Link to={this.props.match.url}>Sessions</Link>
+                            <br/>
+                            <Link to={`${this.props.match.url}/add`}>Add session</Link>
+                        </div> <hr/>
+                        <div>
+                            <Switch>
+                                <Route path ={`${this.props.match.url}/add`} component={AddSession}/>
+                                <Route path ={this.props.match.url} component={SessionsList}/>
+                            </Switch>
+                        </div>
+                    </div>
+                </>
                 );
                 break;
         case WorkshopDetails.Status.ERROR_LOADING_WORKSHOP_DETAILS: 
@@ -96,7 +118,7 @@ export default class WorkshopDetails extends Component {
     }
 
     componentDidMount() {
-        console.log('id is', this.props.match.params.id)
+       // console.log('id is', this.props.match.params.id)
         getWorkshopById(this.props.match.params.id)
             .then( workshop => {
                 this.setState({
