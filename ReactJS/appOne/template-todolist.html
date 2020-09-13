@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
+        <title>ToDoList</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     </head>
     <body>
@@ -18,10 +18,10 @@
         <script type="text/babel">
             function TodoInput( { addTodo } ) {
                 const inputRef = React.createRef();
-             //   console.log(inputRef);
+             
                 const addTodoHelper = () => addTodo({
                     name: inputRef.current.value,
-                    completed: false
+                    completed: false,
                 });            
 
                 return (
@@ -32,25 +32,42 @@
                 );
             }
 
-            function TodoList( { todos } ) {
-
-                const inputRef = React.createRef();
-
-                const delTodoHelper = () => delTodo({ idx: inputRef.current.value  });
-
+            function TodoList ({todos, delTodo, completed}) {
                 return (
-                    <ul className="list-group">
-                    {
-                        todos.map( todo => (
-                            <li key={todo.name} className="list-group-item">
-                                <input type="checkbox" checked={todo.completed} />
-                                Name: {todo.name}
-                                <button className="btn btn-danger btn-sm float-right" onClick={delTodoHelper}>Delete</button>
+                todos.map( todo => {
+                    if(todo.completed === true) return
+                    
+                    const delTodoHelper =   () => delTodo(todo.name);
+                    const completedHelper = () => completed(todo.name);
+    
+                    
+                    return (
+                        <li key={todo.name} className="list-group-item">
+                        <input type="checkbox" checked={todo.completed} onClick={completedHelper}/>
+                        &nbsp; {todo.name}
+                        <button className="btn btn-danger btn-sm float-right" onClick={delTodoHelper} >Delete</button>
+                    </li>
+                    )
+                }) )
+            }
+
+            function DoneArchiveList () {
+                return ( <React.Fragment>
+                    <hr/>
+                    <div>Completed Tasks</div>
+                    {todos.map(todo => {
+                        if(todo.completed === false) return
+
+                        return (
+                            <li key={todo.id} className="list-unstyled">
+                                <small className="font-italic"> { todo.name } </small>
                             </li>
-                        ))
-                    }
-                    </ul>
-                );
+                        )
+                    })}
+
+                </React.Fragment>
+                )
+
             }
 
             class TodoListApp extends React.Component {
@@ -59,39 +76,65 @@
                 }
 
                 addTodo = ( newTodo ) => {
+                    let Todo = {
+                        ...newTodo, id: this.state.todos.length
+                    } 
                     this.setState({
                         todos: [
                             ...this.state.todos,
-                            newTodo
+                            Todo
                         ]
                     });
                 }
 
-                delTodo = ( {idx} ) => {
-                   // console.log(idx)
+                delTodo = (name) => {
+
                     this.setState({
-                        todos: this.todos.splice(idx,1)
-                    });
+                         todos: this.state.todos.filter((obj) => {
+                             return obj.name !== name
+                         })
+                    })
                 }
+
+                completed = (name) => {
+                    let oldObj = this.state.todos.filter( (obj)=> { return obj.name === name } )[0]
+                    let newObj = {...oldObj, completed: true}
+                    console.log('newObj: ', newObj); console.log('oldObj: ', oldObj)
+
+                     this.setState({
+
+                        todos: [...this.state.todos.filter((obj) => {return obj.name !== name}), newObj] 
+                        
+                     }, console.log('arr is: ', this.state.todos))   
+                }
+
 
                 render() {
                     const { todos } = this.state;
+                    console.log('initial', this.state.todos)
                     
                     return (
                         <div className="container my-5">
                             <h1>Todo List Application</h1>
                             <hr />
                             <TodoInput context={this} addTodo={this.addTodo} />
-                            <TodoList todos={todos} />
+                            <ul className="list-group">
+                                <TodoList todos={todos} delTodo={this.delTodo}  completed={this.completed}/>
+                            </ul>
+                            <ul className="list-group">
+                                <DoneArchiveList todos={todos} />
+                            </ul>
+
                         </div>
                     );
                 }
             }
 
             const todos = [
-                { name: 'Go on vacation', completed: false },
-                { name: 'Practice React', completed: false },
-                { name: 'Practice MongoDB', completed: true }
+                { name: 'Go on vacation', completed: false, id:0 },
+
+                { name: 'Practice React', completed: false, id:1  },
+                { name: 'Practice MongoDB', completed: true, id: 2 }
             ];
 
             ReactDOM.render( <TodoListApp todos={todos} />, document.getElementById( 'root' ) );

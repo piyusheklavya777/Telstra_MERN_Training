@@ -11,46 +11,35 @@
         <div id="root"></div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.development.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.8.6/umd/react-dom.development.js"></script>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 
         <script type="text/babel">
-            class Counter extends React.Component {
-                state = {  num : 0  }
+           
+            function StopWatch(props) {
 
-                constructor(props) {
-                    super(props)
-                    this.increment = this.increment.bind(this);
-                }
+                const [running, setRunning] = React.useState(false);
 
-                increment=()=> {
-                    alert('+ was clicked')
-                    // this.setState({
-                    //     num: this.state.num +1
-                    // })
-                    console.log('in render this = ', this)
-                }
-                decrement=()=> {
-                    alert('- was clicked')
-                    // this.setState({
-                    //     num: this.state.num -1
-                    // })
-                    console.log('in render this = ', this)
-                }
+                console.log('initialrender')
 
-                render() {
-                    console.log('in render this = ', this);
-                    return (
-                        <div>
-                            <span>{this.state.num}</span> 
-                            <button onClick={this.increment}>Start</button> 
-                            <button onClick={this.decrement}>Pause</button>   
-                        </div>
-                    )
-                }
+                const start = () => setRunning(true );
+                const stop  = () => setRunning(false);
+
+                React.useEffect(() => {
+                   
+                })
+                return (
+                    <div>
+                        Time passed : {timeelapsed}
+                        <button onClick={start} >Start</button>
+                        <button onClick={stop} >Stop</button>
+                        <button onClick={reset}>Reset</button>
+                    </div>
+                )
             }
-            ReactDOM.render( <Counter/>, document.getElementById( 'root' ) );
+
+            ReactDOM.render( <StopWatch/>, document.getElementById( 'root' ) );
         </script>
     </body>
 </html>
